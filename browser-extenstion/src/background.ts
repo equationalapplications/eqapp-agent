@@ -1,5 +1,3 @@
-// src/background.ts (or wherever your background script is)
-
 chrome.runtime.onMessage.addListener((
     request: any, // Type the request appropriately later
     _sender: chrome.runtime.MessageSender,
@@ -13,6 +11,23 @@ chrome.runtime.onMessage.addListener((
         });
 
         return true; // Keep the message channel open for sendResponse
+    }
+
+    // Handle authDataReceived action
+    if (request.action === "authDataReceived") {
+        const { accessToken, refreshToken } = request;
+
+        // Store or use the tokens as needed
+        console.log("Access Token:", accessToken);
+        console.log("Refresh Token:", refreshToken);
+
+        // Example: Store tokens in local storage
+        chrome.storage.local.set({ accessToken, refreshToken }, () => {
+            console.log("Tokens stored");
+        });
+
+        sendResponse({ status: "success" });
+        return true;
     }
 
     return false; // Important: Return false if you're not handling the message synchronously
