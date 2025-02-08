@@ -9,12 +9,12 @@ const origin = (
 )?.hostUri
     ?.split(":")
     .shift();
-
+const dev = process.env.NODE_ENV === 'development';
 
 const devSupabaseUrl = origin ? `http://${origin}:54321` : `http://127.0.0.1:54321`;
 
-const supabaseUrl = __DEV__ ? devSupabaseUrl : process.env.EXPO_PUBLIC_SUPABASE_URL;
-const supabaseAnonKey = __DEV__ ? process.env.EXPO_PUBLIC_DEV_SUPABASE_ANON_KEY : process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseUrl = dev ? devSupabaseUrl : process.env.EXPO_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = dev ? process.env.EXPO_PUBLIC_DEV_SUPABASE_ANON_KEY : process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error('Supabase URL or Anon Key is not defined');

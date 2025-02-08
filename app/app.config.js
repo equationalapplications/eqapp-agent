@@ -1,13 +1,18 @@
+const env = Object.fromEntries(
+  Object.entries(process.env).filter(([key]) => key.startsWith('EXPO_PUBLIC_')),
+);
+
 export default {
   "expo": {
     "extra": {
+      env,
       "eas": {
         "projectId": "a1cfb90c-978c-4092-9c99-dedf70d665a4"
       }
     },
     "owner": "equationalapplicationsllc",
     "name": process.env.EXPO_PUBLIC_NAME,
-    "slug": "equational-agent",
+    "slug": "equational-applications-agent",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
