@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Redirect, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { Redirect, Tabs } from 'expo-router';
 
 import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
@@ -20,6 +19,24 @@ export default function PrivateTabLayout() {
   const headerShown = useClientOnlyValue(false, true);
   const colorScheme = useColorScheme();
   const { session } = useSession();
+
+  // useEffect hook to send message to extension
+  useEffect(() => {
+    if (session && typeof session !== 'boolean') { // Only send message if session exists (user is logged in)
+      const accessToken = session?.access_token; // Access token from Supabase session
+      const refreshToken = session?.refresh_token; // Refresh token from Supabase session (if available)
+
+      if (window.opener && window.opener !== window) { // Check if opened by extension
+        window.opener.postMessage({
+          action: "authDataReceived",
+          accessToken: accessToken,
+          refreshToken: refreshToken, // Include refresh token if you have it
+        }, "*"); // The "*" is important for cross-origin communication
+      }
+    }
+  }, [session]); // This effect runs whenever the session changes
+
+
   if (!session) {
     return <Redirect href='/signin' />
   }

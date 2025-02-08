@@ -7,8 +7,7 @@ import { validateEmailPattern, validatePasswordPattern } from '../../lib/validat
 import { router } from 'expo-router';
 import './styles.css';
 
-const isDev = __DEV__;
-
+const dev = process.env.NODE_ENV === 'development';
 interface FormData {
     username: string
     password: string
@@ -64,7 +63,7 @@ export default function Auth() {
         const { error } = await supabase.auth.signInWithOtp({
             email: username,
             options: {
-                emailRedirectTo: isDev ? 'http://localhost:5173' : 'https://user.equationalapplications.com/',
+                emailRedirectTo: dev ? 'http://localhost:5173' : 'https://user.equationalapplications.com/',
                 shouldCreateUser: false,
                 captchaToken
             }
