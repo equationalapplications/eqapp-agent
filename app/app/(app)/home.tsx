@@ -14,7 +14,6 @@ export default function HomeTab() {
     if (session && typeof session !== 'boolean') {
       const accessToken = session?.access_token;
       const refreshToken = session?.refresh_token;
-
       if (window.opener && window.opener !== window) { // Check if opened by extension
         console.log('Sending auth data to extension...', accessToken, refreshToken, window.opener);
         window.opener.postMessage({
