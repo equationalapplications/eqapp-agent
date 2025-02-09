@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "../global.css";
 import { supabase } from "../lib/supabaseClient";
-import { Session } from "@supabase/supabase-js";
 
 export const Popup = () => {
-  const [session, setSession] = useState<Session | null>(null);
+
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
-      setSession(session);
-      console.log("Auth state changed:", event, session);
-    })
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+      if (!session) {
+        const authUrl = process.env.VITE_WEB_AUTH_URL;
+        chrome.tabs.create({ url: authUrl }); // No need to store tabId here
+      }
     });
   }, []);
 
-  useEffect(() => {
-    if (!session) {
-      chrome.tabs.create({ url: process.env.VITE_WEB_AUTH_URL });
-    }
-  }, [session]);
 
   return (
     <div className="text-5xl p-10 font-extrabold">
-      {session ? <p>Equational Agent</p> : <p>Please sign in</p>}
+      <p>Equational Agent</p>
     </div>
   );
 };
