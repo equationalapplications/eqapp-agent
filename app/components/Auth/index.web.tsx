@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { validateEmailPattern, validatePasswordPattern } from '../../lib/validatePatterns';
 import { router } from 'expo-router';
 import './styles.css';
+import { turnstileKey } from '@/constants';
 
 const dev = process.env.NODE_ENV === 'development';
 interface FormData {
@@ -17,13 +18,12 @@ interface FormData {
 }
 
 export default function Auth() {
-    const siteKey = process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY;
     const { register, watch, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [action, setAction] = useState<'signin' | 'create' | 'forgot' | 'otp'>('signin');
     const [loading, setLoading] = useState(false);
     const [password] = watch(["password"])
     const turnstileRef = useRef<any>(null);
-    if (siteKey === undefined) {
+    if (turnstileKey === undefined) {
         throw new Error('No turnstile key');
     }
 
@@ -273,7 +273,7 @@ export default function Auth() {
                     <div>
                         {action !== 'otp' && <Turnstile
                             ref={turnstileRef}
-                            siteKey={siteKey}
+                            siteKey={turnstileKey}
                         />}
                     </div>
                 </form>

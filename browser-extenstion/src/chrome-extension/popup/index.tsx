@@ -7,7 +7,7 @@ export const Popup = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        const authUrl = process.env.VITE_WEB_AUTH_URL;
+        const authUrl = import.meta.env.VITE_WEB_AUTH_URL;
         chrome.tabs.create({ url: authUrl }); // No need to store tabId here
       }
     });

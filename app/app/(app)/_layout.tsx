@@ -6,6 +6,7 @@ import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useClientOnlyValue } from '@/hooks/useClientOnlyValue';
 import { useSession } from '@/hooks/useSession';
+import { extensionOrigin } from '@/constants';
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
@@ -20,22 +21,21 @@ export default function PrivateTabLayout() {
   const colorScheme = useColorScheme();
   const { session } = useSession();
 
-  // useEffect hook to send message to extension
+  // useEffect hook to send auth session to browser extension
   useEffect(() => {
-    if (session && typeof session !== 'boolean') { // Only send message if session exists (user is logged in)
-      const accessToken = session?.access_token; // Access token from Supabase session
-      const refreshToken = session?.refresh_token; // Refresh token from Supabase session (if available)
+    if (session && typeof session !== 'boolean') {
+      const accessToken = session?.access_token;
+      const refreshToken = session?.refresh_token;
 
       if (window.opener && window.opener !== window) { // Check if opened by extension
         window.opener.postMessage({
           action: "authDataReceived",
           accessToken: accessToken,
-          refreshToken: refreshToken, // Include refresh token if you have it
-        }, "*"); // The "*" is important for cross-origin communication
+          refreshToken: refreshToken,
+        }, extensionOrigin);
       }
     }
-  }, [session]); // This effect runs whenever the session changes
-
+  }, [session]);
 
   if (!session) {
     return <Redirect href='/signin' />

@@ -6,6 +6,7 @@ import { Controller, useForm } from "react-hook-form"
 import { validateEmailPattern, validatePasswordPattern } from '@/lib/validatePatterns'
 import ReactNativeTurnstile, { resetTurnstile } from '@/components/ReactNativeTurnstile';
 import { Link, router } from 'expo-router';
+import { turnstileKey } from '@/constants'
 
 interface FormData {
     username: string
@@ -22,8 +23,7 @@ export default function Auth() {
     const [captchaToken, setCaptchaToken] = useState('');
     const [loading, setLoading] = useState(false)
     const [password] = watch(["password"])
-    const siteKey = process.env.EXPO_PUBLIC_TURNSTILE_SITE_KEY;
-    if (siteKey === undefined) {
+    if (turnstileKey === undefined) {
         throw new Error('No turnstile key');
     }
 
@@ -299,7 +299,7 @@ export default function Auth() {
             </Button>
             {
                 action !== 'otp' && <ReactNativeTurnstile
-                    sitekey={siteKey}
+                    sitekey={turnstileKey}
                     onVerify={token => setCaptchaToken(token)}
                     resetRef={turnstileResetRef}
                     style={{ marginLeft: 'auto', marginRight: 'auto' }}
