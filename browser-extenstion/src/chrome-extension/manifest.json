@@ -24,7 +24,6 @@
   ],
   "externally_connectable": {
     "matches": [
-      "*://localhost/*",
       "https://*.equationalapplications.com/*"
     ]
   }

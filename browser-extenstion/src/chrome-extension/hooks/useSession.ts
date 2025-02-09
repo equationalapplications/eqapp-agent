@@ -10,30 +10,24 @@ export const useSession = () => {
             // Get session from chrome.local storage
             chrome.storage.local.get(['session'], async (result) => {
                 if (result.session) {
-                    setSession(result.session);
                     // Set the session in Supabase
-                    await supabase.auth.setSession(result.session);
-                } else {
-                    // If no session in chrome.storage, get session from Supabase
-                    const { data: { session } } = await supabase.auth.getSession();
-                    setSession(session);
-                    // Store the session in chrome.local storage
-                    chrome.storage.local.set({ session });
+                    const res = await supabase.auth.setSession(result.session);
+                    setSession(res.data.session);
+                    await chrome.storage.local.set({ session: res.data.session });
                 }
             });
         };
-
         getSessionFromStorage();
 
         // Listen for changes in auth state
         const { data: authListener } = supabase.auth.onAuthStateChange(
             async (_event, session) => {
+                console.log('Auth state changed:', _event, session);
                 setSession(session);
                 // Set the session in chrome.local storage
-                chrome.storage.local.set({ session });
+                await chrome.storage.local.set({ session });
             }
         );
-
         return () => {
             authListener.subscription.unsubscribe();
         };
