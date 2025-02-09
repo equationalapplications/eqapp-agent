@@ -11,7 +11,7 @@ function checkSessionAndAuthenticate() {
             // No session found, redirect to the authentication website
             chrome.tabs.create({ url: websiteOrigin }, (_tab) => {
                 // Listen for messages from the authentication website
-                chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
                     if (sender.origin !== websiteOrigin) {
                         console.warn(`Blocked message from unexpected origin: ${sender.origin}`);
                         return;

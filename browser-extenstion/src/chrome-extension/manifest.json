@@ -18,8 +18,14 @@
     "type": "module"
   },
   "permissions": [
-    "identity",
     "tabs",
-    "storage"
-  ]
+    "storage",
+    "background"
+  ],
+  "externally_connectable": {
+    "matches": [
+      "*://localhost/*",
+      "https://*.equationalapplications.com/*"
+    ]
+  }
 }
