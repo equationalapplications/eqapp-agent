@@ -42,7 +42,13 @@ export default {
     },
     "plugins": [
       "expo-router",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

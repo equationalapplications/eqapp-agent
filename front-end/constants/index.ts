@@ -9,7 +9,7 @@ export const origin = (
     ?.split(":")
     .shift();
 
-export const extensionOrigin = dev ? '*' : process.env.EXPO_PUBLIC_EXTENSION_TARGET;
+export const extensionOrigin = dev ? '*' : '*';//process.env.EXPO_PUBLIC_EXTENSION_TARGET;
 export const devSupabaseUrl = origin ? `http://${origin}:54321` : `http://127.0.0.1:54321`;
 export const supabaseUrl = dev ? devSupabaseUrl : process.env.EXPO_PUBLIC_SUPABASE_URL;
 export const supabaseAnonKey = dev ? process.env.EXPO_PUBLIC_DEV_SUPABASE_ANON_KEY : process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;

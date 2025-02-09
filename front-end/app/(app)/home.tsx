@@ -4,8 +4,6 @@ import { Text, View } from '@/components/Themed';
 import { useEffect } from 'react';
 import { extensionOrigin } from '@/constants';
 import { useSession } from '@/hooks/useSession';
-import { Button } from '@rneui/themed';
-
 
 export default function HomeTab() {
   const { session } = useSession();
@@ -28,10 +26,10 @@ export default function HomeTab() {
   useEffect(() => {
     // Listen for messages from the extension
     window.addEventListener('message', (event) => {
-      if (event.origin !== extensionOrigin) {
-        console.warn(`Blocked message from unexpected origin: ${event.origin}`);
-        return;
-      }
+      // if (event.origin !== extensionOrigin) {
+      //   console.warn(`Blocked message from unexpected origin: ${event.origin}`);
+      //   return;
+      // }
       const { action } = event.data;
       if (action === "authenticateExtension") {
         console.log('Received authenticateExtension message from extension');
@@ -47,8 +45,6 @@ export default function HomeTab() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
-      <Button title="Open Extension" onPress={() => { window.open(extensionOrigin, '_blank') }} />
-      <Button title="Authenticate Extension" onPress={() => sendAuthDataToExtension()} />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );
