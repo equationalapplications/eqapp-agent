@@ -1,26 +1,39 @@
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "getAuthToken" && sender?.tab?.id) { // Handle the auth request from the popup
-        chrome.scripting.executeScript({
-            target: { tabId: sender.tab.id }, // Target the correct tab
-            func: () => {
-                return document.cookie;
-            },
-        }, (results) => {
-            if (results && results[0] && results[0].result) {
-                const cookies = results[0].result.split(';');
-                let accessToken = null;
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    if (cookie.startsWith('your-cookie-name=')) { // Replace 'your-cookie-name'
-                        accessToken = cookie.substring('your-cookie-name='.length);
-                        break;
-                    }
-                }
-                sendResponse({ token: accessToken });
-            } else {
-                sendResponse({ token: null });
-            }
-        });
-        return true; // Important: Indicate asynchronous response
-    }
+import { websiteOrigin } from "./chrome-extension/constants";
+
+chrome.runtime.onInstalled.addListener(() => {
+    checkSessionAndAuthenticate();
 });
+
+function checkSessionAndAuthenticate() {
+    // Check if there's an existing session
+    chrome.storage.local.get(['session'], (result) => {
+        if (!result.session) {
+            // No session found, redirect to the authentication website
+            chrome.tabs.create({ url: websiteOrigin }, (_tab) => {
+                // Listen for messages from the authentication website
+                chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+                    if (sender.origin !== websiteOrigin) {
+                        console.warn(`Blocked message from unexpected origin: ${sender.origin}`);
+                        return;
+                    }
+
+                    const { action, accessToken, refreshToken } = message;
+                    if (action === "authDataReceived") {
+                        console.log('Received auth data:', accessToken, refreshToken);
+                        // Store the session data
+                        chrome.storage.local.set({ session: { accessToken, refreshToken } }, () => {
+                            console.log('Session stored successfully');
+                            sendResponse({ success: true });
+                        });
+                    } else {
+                        console.warn('Received unexpected message', message);
+                        sendResponse({ success: false });
+                    }
+                    return true; // Keep the message channel open for sendResponse
+                });
+            });
+        } else {
+            console.log('Session found:', result.session);
+        }
+    });
+}

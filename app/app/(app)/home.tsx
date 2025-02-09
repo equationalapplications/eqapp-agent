@@ -4,13 +4,13 @@ import { Text, View } from '@/components/Themed';
 import { useEffect } from 'react';
 import { extensionOrigin } from '@/constants';
 import { useSession } from '@/hooks/useSession';
+import { Button } from '@rneui/themed';
 
 
 export default function HomeTab() {
   const { session } = useSession();
 
-  // useEffect hook to send auth session to browser extension
-  useEffect(() => {
+  const sendAuthDataToExtension = () => {
     if (session && typeof session !== 'boolean') {
       const accessToken = session?.access_token;
       const refreshToken = session?.refresh_token;
@@ -23,15 +23,23 @@ export default function HomeTab() {
         }, extensionOrigin);
       }
     }
+  };
+  // useEffect hook to send auth session to browser extension
+  useEffect(() => {
+    if (session) {
+      sendAuthDataToExtension();
+    }
   }, [session]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home</Text>
+      <Button title="Open Extension" onPress={() => { window.open(extensionOrigin, '_blank') }} />
+      <Button title="Authenticate Extension" onPress={() => sendAuthDataToExtension()} />
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
