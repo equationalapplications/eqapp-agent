@@ -24,11 +24,24 @@ export default function HomeTab() {
       }
     }
   };
-  // useEffect hook to send auth session to browser extension
+
   useEffect(() => {
-    if (session) {
-      sendAuthDataToExtension();
-    }
+    // Listen for messages from the extension
+    window.addEventListener('message', (event) => {
+      if (event.origin !== extensionOrigin) {
+        console.warn(`Blocked message from unexpected origin: ${event.origin}`);
+        return;
+      }
+      const { action } = event.data;
+      if (action === "authenticateExtension") {
+        console.log('Received authenticateExtension message from extension');
+        sendAuthDataToExtension();
+      }
+    });
+    // Cleanup listener on unmount
+    return () => {
+      window.removeEventListener('message', () => { });
+    };
   }, [session]);
 
   return (
