@@ -13,7 +13,7 @@ export const Popup = () => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
     if (!session) {
