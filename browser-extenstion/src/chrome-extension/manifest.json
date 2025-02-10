@@ -20,11 +20,23 @@
   "permissions": [
     "tabs",
     "storage",
-    "background"
+    "background",
+    "externally_connectable"
   ],
   "externally_connectable": {
     "matches": [
       "https://*.equationalapplications.com/*"
     ]
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "contentScript.js"
+      ],
+      "all_frames": true
+    }
+  ]
 }
