@@ -1,46 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 import { Text, View } from '@/components/Themed';
-import { useEffect } from 'react';
-import { extensionOrigin } from '@/constants';
-import { useSession } from '@/hooks/useSession';
+import { useExtensionAuth } from '@/hooks/useExtensionAuth';
 
 export default function HomeTab() {
-  const { session } = useSession();
-
-  const sendAuthDataToExtension = () => {
-    if (session && typeof session !== 'boolean') {
-      const accessToken = session?.access_token;
-      const refreshToken = session?.refresh_token;
-      if (window.opener && window.opener !== window) { // Check if opened by extension
-        console.log('Sending auth data to extension...', accessToken, refreshToken, window.opener);
-        window.opener.postMessage({
-          action: "authDataReceived",
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        }, extensionOrigin);
-      }
-    }
-  };
-
-  useEffect(() => {
-    // Listen for messages from the extension
-    window.addEventListener('message', (event) => {
-      // if (event.origin !== extensionOrigin) {
-      //   console.warn(`Blocked message from unexpected origin: ${event.origin}`);
-      //   return;
-      // }
-      const { action } = event.data;
-      if (action === "authenticateExtension") {
-        console.log('Received authenticateExtension message from extension');
-        sendAuthDataToExtension();
-      }
-    });
-    // Cleanup listener on unmount
-    return () => {
-      window.removeEventListener('message', () => { });
-    };
-  }, [session]);
+  useExtensionAuth();
 
   return (
     <View style={styles.container}>
