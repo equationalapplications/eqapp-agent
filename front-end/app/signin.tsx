@@ -3,10 +3,9 @@ import { StyleSheet } from 'react-native';
 import { View } from '@/components/Themed';
 import Auth from '@/components/Auth';
 import { useSession } from '@/hooks/useSession';
-import { Link, Redirect, router } from 'expo-router';
+import { Redirect } from 'expo-router';
 
 export default function SigninModal() {
-    const isPresented = router.canGoBack();
     const { session } = useSession();
     if (session) {
         return <Redirect href="/(app)/home" />;
@@ -14,7 +13,6 @@ export default function SigninModal() {
 
     return (
         <View style={styles.container}>
-            {!isPresented && <Link href="../">Dismiss modal</Link>}
             <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
             <Auth />
         </View>

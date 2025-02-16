@@ -7,7 +7,7 @@ import { AuthContextProvider } from '@/contexts/SessionContext';
 import { useColorScheme } from '@/hooks/useColorScheme';
 //import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
-//import { Inter_900Black } from '@expo-google-fonts/inter';
+//import { useFonts, Roboto_400Regular } from '@expo-google-fonts/roboto';
 //import { Text } from '@rneui/themed';
 
 // export {
@@ -29,6 +29,11 @@ export default function RootLayout() {
   //   // ...FontAwesome.font,
   // });
 
+  // let [loaded] = useFonts({
+  //   Roboto_400Regular,
+  //   ...FontAwesome.font,
+  // });
+
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   // useEffect(() => {
   //   //if (error) throw error;
@@ -48,7 +53,7 @@ export default function RootLayout() {
   // }
 
   // if (!loaded) {
-  //   return <Text>Loading</Text>;
+  //   return null;
   // }
 
   return <RootLayoutNav />;

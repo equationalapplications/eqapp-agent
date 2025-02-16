@@ -1,4 +1,8 @@
 /* Basic styles */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
 .row {
   display: flex; /* Make the row a flex container */
   justify-content: center; /* Center the content horizontally */
