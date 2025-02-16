@@ -17,6 +17,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@expo-google-fonts/roboto": "^0.2.3",
     "@expo/vector-icons": "^14.0.4",
     "@langchain/anthropic": "^0.3.13",
     "@langchain/community": "^0.3.29",

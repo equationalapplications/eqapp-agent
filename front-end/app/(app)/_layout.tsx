@@ -1,5 +1,6 @@
 import React from 'react';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+//@ts-ignore
 import { Redirect, Tabs } from 'expo-router';
 
 import Colors from '@/constants/Colors';
@@ -36,14 +37,14 @@ export default function PrivateTabLayout() {
         name="home"
         options={{
           title: 'Home Tab',
-          tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="home" color={color} />,
         }}
       />
       <Tabs.Screen
         name="settings"
         options={{
           title: 'Settings',
-          tabBarIcon: ({ color }) => <TabBarIcon name="gear" color={color} />,
+          tabBarIcon: ({ color }: { color: string }) => <TabBarIcon name="gear" color={color} />,
         }}
       />
     </Tabs>

@@ -46,7 +46,7 @@ export default {
       [
         "expo-font",
         {
-          "fonts": ["./assets/fonts/SpaceMono-Regular.ttf"]
+          "fonts": ["node_modules/@expo-google-fonts/roboto/Roboto_400Regular.ttf"]
         }
       ]
     ],

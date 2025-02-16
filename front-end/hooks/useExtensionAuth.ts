@@ -25,7 +25,7 @@ export const useExtensionAuth = () => {
                             action: "authDataReceived",
                             accessToken: accessToken,
                             refreshToken: refreshToken,
-                        }, extensionOrigin);
+                        }, '*');//extensionOrigin);
                     }
                 }
             }
