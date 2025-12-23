@@ -21,7 +21,7 @@
     "@expo/vector-icons": "^14.0.4",
     "@langchain/anthropic": "^0.3.13",
     "@langchain/community": "^0.3.29",
-    "@langchain/core": "^0.3.39",
+    "@langchain/core": "^0.3.80",
     "@langchain/langgraph": "^0.2.45",
     "@langchain/openai": "^0.3.17",
     "@react-native-async-storage/async-storage": "1.23.1",
