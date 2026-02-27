@@ -20,7 +20,7 @@
     "@expo-google-fonts/roboto": "^0.2.3",
     "@expo/vector-icons": "^14.0.4",
     "@langchain/anthropic": "^0.3.13",
-    "@langchain/community": "^0.3.29",
+    "@langchain/community": "^1.1.14",
     "@langchain/core": "^0.3.39",
     "@langchain/langgraph": "^0.2.45",
     "@langchain/openai": "^0.3.17",
